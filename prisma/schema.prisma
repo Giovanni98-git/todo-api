@@ -1,0 +1,73 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id              Int      @id @default(autoincrement())
+  firstName       String
+  lastName        String
+  email           String   @unique
+  password        String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  TaskGroup TaskGroup[]
+
+  tasksCreated Task[] @relation("user_creator")
+
+  tasksAssigned Task[] @relation("assigned")
+}
+
+model Task {
+  id              Int      @id @default(autoincrement())
+  title           String
+  description     String?
+  dueDate         DateTime?
+  priority        String?   // "urgent" or "pas urgent"
+  isDone          Boolean  @default(false)
+  groupId         Int?
+  group           TaskGroup? @relation(fields: [groupId], references: [id])
+  creatorId       Int
+  creator         User     @relation("user_creator", fields: [creatorId], references: [id])
+  assignedId      Int?
+  assigned        User?  @relation("assigned",fields: [assignedId], references: [id])
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model TaskGroup {
+  id              Int      @id @default(autoincrement())
+  label           String
+  color           String?
+  description     String?
+  userId          Int
+  user            User     @relation(fields: [userId], references: [id])
+  tasks           Task[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Mail {
+  id              Int      @id @default(autoincrement())
+  title           String?
+  message         String
+  emailTo         String
+  emailsCC         String?
+  emailCci         String?
+  attachements    String?
+  emailCCStatus  Boolean  @default(false)
+  emailCciStatus  Boolean  @default(false)
+  emailToStatus  Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
