@@ -323,13 +323,12 @@ L'API utilise Prisma avec les modèles suivants :
 - **User** : Stocke les informations des utilisateurs (id, firstName, lastName, email, password).
 - **Task** : Stocke les tâches avec titre, description, date d'échéance, priorité, groupe et utilisateur assigné.
 - **TaskGroup** : Stocke les groupes de tâches avec étiquette, description et couleur.
-- **File** : Stocke les métadonnées des fichiers pour les pièces jointes des emails.
+- **Mail** : Stocke les emails internes de l'application mais ce n'est pas encore terminé.
 
 ## Configuration de MailHog
 
 - **Hôte et port SMTP** : Configurez votre service d'email dans l'API pour utiliser `MAILHOG_HOST=localhost` et `MAILHOG_PORT=1025`.
 - **Interface web** : L'interface de MailHog est accessible à `http://localhost:8025`.
-- **Test des emails** : Tous les emails envoyés via `/mail/create` sont capturés par MailHog et affichés dans l'interface web.
 
 ## Contribution
 
